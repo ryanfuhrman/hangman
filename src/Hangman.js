@@ -28,13 +28,9 @@ class Hangman extends Component {
   */
   guessedWord() {
     // reveal the word if the player has run out of guesses
-    if (this.state.nWrong === this.props.maxWrong) {
-      return this.state.answer;
-    } else {
-      return this.state.answer
-        .split("")
-        .map(ltr => (this.state.guessed.has(ltr) ? ltr : "_"));
-    }
+    return this.state.answer
+      .split("")
+      .map(ltr => (this.state.guessed.has(ltr) ? ltr : "_"));
   }
 
   /** handleGuest: handle a guessed letter:
@@ -51,21 +47,17 @@ class Hangman extends Component {
 
   /** generateButtons: return array of letter buttons to render */
   generateButtons() {
-    if (this.state.nWrong < this.props.maxWrong) {
-      return "abcdefghijklmnopqrstuvwxyz".split("").map(ltr => (
-        <button
-          key={ltr}
-          value={ltr}
-          className="Hangman-btns-ltr"
-          onClick={this.handleGuess}
-          disabled={this.state.guessed.has(ltr)}
-        >
-          {ltr}
-        </button>
-      ));
-    } else {
-      return <p className="Hangman-loss-msg">Sorry, You Lose!</p>;
-    }
+    return "abcdefghijklmnopqrstuvwxyz".split("").map(ltr => (
+      <button
+        key={ltr}
+        value={ltr}
+        className="Hangman-btns-ltr"
+        onClick={this.handleGuess}
+        disabled={this.state.guessed.has(ltr)}
+      >
+        {ltr}
+      </button>
+    ));
   }
 
   newGame() {
@@ -78,6 +70,12 @@ class Hangman extends Component {
 
   /** render: render game */
   render() {
+    const gameOver = this.state.nWrong >= this.props.maxWrong;
+    const isWinner = this.guessedWord().join("") === this.state.answer;
+    let gameState = this.generateButtons();
+    if (isWinner) gameState = "Winner!!!";
+    if (gameOver) gameState = "Game Over!";
+
     return (
       <div className="Hangman">
         <h1>Hangman</h1>
@@ -92,8 +90,10 @@ class Hangman extends Component {
             <p className="Hangman-wrong-guesses">
               Number of wrong guesses: <span>{this.state.nWrong}</span>
             </p>
-            <p className="Hangman-word">{this.guessedWord()}</p>
-            <div className="Hangman-btns">{this.generateButtons()}</div>
+            <p className="Hangman-word">
+              {gameOver ? this.state.answer : this.guessedWord()}
+            </p>
+            <div className="Hangman-btns">{gameState}</div>
             <button className="Hangman-reset" onClick={this.newGame}>
               New Word
             </button>
