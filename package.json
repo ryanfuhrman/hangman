@@ -6,7 +6,7 @@
     "braces": "^3.0.2",
     "css-loader": "^3.0.0",
     "cssnano": "^4.1.10",
-    "handlebars": "^4.1.2",
+    "handlebars": "^4.5.3",
     "js-yaml": "^3.13.1",
     "postcss-svgo": "^4.0.2",
     "react": "^16.4.1",
